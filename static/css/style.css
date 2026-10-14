@@ -2294,38 +2294,3 @@ img {
     right: -30px;
   }
 }
-
-/* ==========================================================================
-   GOOGLE TRANSLATE SEAMLESS INVISIBILITY OVERRIDES
-   ========================================================================== */
-
-/* Completely hide default Google Translate banner frame */
-.goog-te-banner-frame,
-.goog-te-banner-frame.skiptranslate,
-iframe.goog-te-banner-frame {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  max-height: 0 !important;
-  border: none !important;
-}
-
-/* Prevent Google Translate from shoving body down by 40px */
-body {
-  top: 0px !important;
-  position: static !important;
-}
-
-/* Hide Google Translate tooltip popups & balloons */
-#goog-gt-tt,
-.goog-te-balloon-frame {
-  display: none !important;
-  visibility: hidden !important;
-}
-
-/* Remove awkward blue highlight on translated text */
-.goog-text-highlight {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
