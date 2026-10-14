@@ -25,7 +25,7 @@
     <div class="container">
       <nav class="navbar">
         <!-- Logo and Name -->
-        <a href="{{ url_for('index') }}" class="brand-logo" title="Kisan Sahayak Homepage">
+        <a href="{{ url_for('index') }}" class="brand-logo notranslate" translate="no" title="Kisan Sahayak Homepage">
           <div class="logo-badge">
             <i class="fa-solid fa-wheat-awn"></i>
           </div>
@@ -53,6 +53,70 @@
 
         <!-- Action / Auth Controls -->
         <div class="nav-actions">
+          <!-- Multi-Language Selector Dropdown -->
+          <div class="lang-dropdown notranslate" translate="no" id="langDropdown">
+            <button type="button" class="btn btn-secondary btn-sm lang-dropdown-btn" id="langDropdownBtn" aria-expanded="false" aria-haspopup="true" title="Change Language / भाषा बदला">
+              <i class="fa-solid fa-globe lang-globe-icon"></i>
+              <span id="currentLangLabel">English</span>
+              <i class="fa-solid fa-chevron-down lang-chevron-icon"></i>
+            </button>
+            <div class="lang-dropdown-menu" id="langDropdownMenu" role="menu">
+              <div class="lang-dropdown-header">
+                <i class="fa-solid fa-language"></i> Select Language / भाषा निवडा
+              </div>
+              <div class="lang-options-grid">
+                <button type="button" class="lang-option-btn active" data-lang="en">
+                  <span class="lang-name">English</span>
+                  <span class="lang-sub">English</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="hi">
+                  <span class="lang-name">हिन्दी</span>
+                  <span class="lang-sub">Hindi</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="mr">
+                  <span class="lang-name">मराठी</span>
+                  <span class="lang-sub">Marathi</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="gu">
+                  <span class="lang-name">ગુજરાતી</span>
+                  <span class="lang-sub">Gujarati</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="pa">
+                  <span class="lang-name">ਪੰਜਾਬੀ</span>
+                  <span class="lang-sub">Punjabi</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="bn">
+                  <span class="lang-name">বাংলা</span>
+                  <span class="lang-sub">Bengali</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="te">
+                  <span class="lang-name">తెలుగు</span>
+                  <span class="lang-sub">Telugu</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="ta">
+                  <span class="lang-name">தமிழ்</span>
+                  <span class="lang-sub">Tamil</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="kn">
+                  <span class="lang-name">ಕನ್ನಡ</span>
+                  <span class="lang-sub">Kannada</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="ml">
+                  <span class="lang-name">മലയാളം</span>
+                  <span class="lang-sub">Malayalam</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="ur">
+                  <span class="lang-name">اردو</span>
+                  <span class="lang-sub">Urdu</span>
+                </button>
+                <button type="button" class="lang-option-btn" data-lang="or">
+                  <span class="lang-name">ଓଡ଼ିଆ</span>
+                  <span class="lang-sub">Odia</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
           {% if current_user %}
             <a href="{{ url_for('bookmarks') }}" class="btn btn-secondary btn-sm" title="Saved Resources">
               <i class="fa-solid fa-bookmark" style="color: var(--amber-warm);"></i>
@@ -102,6 +166,27 @@
           <i class="fa-solid fa-user-check"></i> {{ current_user.full_name }}
         </span>
       {% endif %}
+    </div>
+
+    <!-- Mobile Language Selector -->
+    <div class="mobile-lang-box notranslate" translate="no">
+      <label for="mobileLanguageSelect" class="mobile-lang-label">
+        <i class="fa-solid fa-globe"></i> Website Language / भाषा निवडा:
+      </label>
+      <select id="mobileLanguageSelect" class="form-control mobile-lang-select" aria-label="Select mobile language">
+        <option value="en">🌐 English (English)</option>
+        <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+        <option value="mr">🇮🇳 मराठी (Marathi)</option>
+        <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
+        <option value="pa">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</option>
+        <option value="bn">🇮🇳 বাংলা (Bengali)</option>
+        <option value="te">🇮🇳 తెలుగు (Telugu)</option>
+        <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
+        <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
+        <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
+        <option value="ur">🇮🇳 اردو (Urdu)</option>
+        <option value="or">🇮🇳 ଓଡ଼ିଆ (Odia)</option>
+      </select>
     </div>
 
     <ul class="mobile-menu-list">
@@ -323,6 +408,21 @@
   <button id="backToTopBtn" class="back-to-top-btn" aria-label="Back to top of page" title="Scroll to top">
     <i class="fa-solid fa-arrow-up"></i>
   </button>
+
+  <!-- Google Translate Element (visually hidden; managed via custom UI) -->
+  <div id="google_translate_element" aria-hidden="true" style="position: absolute; left: -9999px; top: -9999px; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;"></div>
+
+  <!-- Google Translate Initialization Script -->
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,mr,gu,pa,bn,te,ta,kn,ml,ur,or',
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <!-- Main JavaScript File -->
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>

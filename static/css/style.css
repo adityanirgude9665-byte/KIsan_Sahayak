@@ -2088,3 +2088,244 @@ img {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   MULTI-LANGUAGE SELECTOR & GOOGLE TRANSLATE STYLING
+   ========================================================================== */
+
+/* Language Selector Dropdown in Navbar */
+.lang-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.38rem 0.8rem;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-green);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--forest-dark);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.lang-dropdown-btn:hover,
+.lang-dropdown.open .lang-dropdown-btn {
+  background-color: var(--mint-bg);
+  border-color: var(--primary-green);
+  box-shadow: 0 2px 8px rgba(21, 128, 61, 0.15);
+  transform: translateY(-1px);
+}
+
+.lang-globe-icon {
+  color: var(--primary-green);
+  font-size: 0.95rem;
+}
+
+.lang-chevron-icon {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 0.15rem;
+}
+
+.lang-dropdown.open .lang-chevron-icon {
+  transform: rotate(180deg);
+  color: var(--primary-green);
+}
+
+.lang-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-green);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg), 0 10px 30px rgba(6, 78, 59, 0.1);
+  padding: 0.75rem;
+  z-index: 1050;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  pointer-events: none;
+}
+
+.lang-dropdown.open .lang-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.lang-dropdown-header {
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--forest-dark);
+  padding: 0.2rem 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.lang-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.35rem;
+  max-height: 270px;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+}
+
+.lang-options-grid::-webkit-scrollbar {
+  width: 5px;
+}
+.lang-options-grid::-webkit-scrollbar-track {
+  background: var(--bg-page);
+  border-radius: 4px;
+}
+.lang-options-grid::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 4px;
+}
+.lang-options-grid::-webkit-scrollbar-thumb:hover {
+  background: var(--text-light);
+}
+
+.lang-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition-fast);
+  width: 100%;
+}
+
+.lang-option-btn:hover {
+  background: var(--mint-bg);
+  border-color: var(--border-green);
+  transform: translateY(-1px);
+}
+
+.lang-option-btn.active {
+  background: var(--mint-subtle);
+  border-color: var(--primary-green);
+  box-shadow: 0 1px 3px rgba(21, 128, 61, 0.1);
+}
+
+.lang-option-btn .lang-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+  line-height: 1.25;
+}
+
+.lang-option-btn.active .lang-name {
+  color: var(--primary-green);
+}
+
+.lang-option-btn .lang-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+/* Mobile Drawer Language Selector Box */
+.mobile-lang-box {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.mobile-lang-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--forest-dark);
+  margin-bottom: 0.45rem;
+}
+
+.mobile-lang-select {
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-green);
+  background-color: var(--card-bg);
+  font-weight: 700;
+  color: var(--forest-dark);
+  cursor: pointer;
+}
+
+.mobile-lang-select:focus {
+  border-color: var(--primary-green);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+@media (max-width: 640px) {
+  .lang-dropdown-btn span {
+    display: none;
+  }
+  .lang-dropdown-btn {
+    padding: 0.38rem 0.55rem;
+  }
+  .lang-dropdown-menu {
+    width: 290px;
+    right: -30px;
+  }
+}
+
+/* ==========================================================================
+   GOOGLE TRANSLATE SEAMLESS INVISIBILITY OVERRIDES
+   ========================================================================== */
+
+/* Completely hide default Google Translate banner frame */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  border: none !important;
+}
+
+/* Prevent Google Translate from shoving body down by 40px */
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+/* Hide Google Translate tooltip popups & balloons */
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Remove awkward blue highlight on translated text */
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
