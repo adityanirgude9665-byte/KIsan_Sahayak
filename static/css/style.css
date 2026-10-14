@@ -41,6 +41,9 @@
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -52,6 +55,10 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
 }
 
 /* Page entrance animation */
@@ -90,9 +97,9 @@ img {
 /* --- CONTAINER & LAYOUT --- */
 .container {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1380px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
 }
 
 .container-narrow {
@@ -104,22 +111,25 @@ img {
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
+  max-width: 100%;
   background-color: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-light);
   box-shadow: var(--shadow-sm);
   transition: var(--transition-fast);
-  overflow: visible;
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 76px;
-  padding: 0.6rem 0;
-  gap: 1rem;
+  min-height: 70px;
+  padding: 0.5rem 0;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .brand-logo {
@@ -1651,8 +1661,10 @@ img {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(4px);
   z-index: 2000;
@@ -1876,19 +1888,58 @@ img {
 }
 
 /* --- RESPONSIVE MEDIA QUERIES --- */
-@media (max-width: 1140px) {
-  .nav-menu { display: none; }
-  .hamburger-btn { display: block; }
+@media (max-width: 1440px) {
+  .brand-tagline {
+    display: none !important;
+  }
+  .brand-title {
+    font-size: 1.22rem;
+  }
+  .logo-badge {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+  .nav-menu {
+    gap: 0.15rem;
+  }
+  .nav-link {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.45rem;
+    gap: 0.22rem;
+  }
+  .nav-link i {
+    font-size: 0.78rem;
+  }
+  .nav-actions {
+    gap: 0.35rem;
+  }
+  .nav-actions .btn-sm {
+    font-size: 0.8rem;
+    padding: 0.32rem 0.55rem;
+  }
+  .lang-dropdown-btn {
+    font-size: 0.8rem;
+    padding: 0.32rem 0.65rem;
+  }
+}
+
+@media (max-width: 1250px) {
+  .nav-menu { display: none !important; }
+  .hamburger-btn { display: block !important; }
+  .brand-tagline { display: none !important; }
   .nav-actions .user-badge span { display: none; }
+  .nav-actions .admin-tag span { display: none; }
 }
 
 @media (max-width: 1024px) {
-  .hero-title { font-size: 2.5rem; }
+  .hero-title { font-size: 2.3rem; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .stat-box { border-right: none; border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
   .community-layout { grid-template-columns: 1fr; }
   .forecast-grid { grid-template-columns: repeat(3, 1fr); }
+  .nav-actions .btn-secondary span { display: none; }
 }
 
 @media (max-width: 768px) {
@@ -1911,13 +1962,13 @@ img {
 
   /* Navbar */
   .navbar {
-    min-height: 68px;
-    padding: 0.5rem 0;
-    gap: 0.5rem;
+    min-height: 64px;
+    padding: 0.4rem 0;
+    gap: 0.4rem;
   }
 
   .brand-logo {
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
   .brand-title {
@@ -1925,12 +1976,13 @@ img {
   }
 
   .brand-tagline {
-    font-size: 0.62rem;
+    display: none;
   }
 
   .logo-badge {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
 
   .nav-actions {

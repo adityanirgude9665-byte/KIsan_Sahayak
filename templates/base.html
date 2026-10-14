@@ -89,15 +89,15 @@
 
             {% if current_user.role == 'admin' %}
               <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary btn-sm admin-tag" title="Admin Control Center">
-                <i class="fa-solid fa-shield-halved"></i> Admin
+                <i class="fa-solid fa-shield-halved"></i> <span>Admin</span>
               </a>
             {% endif %}
 
-            <div class="user-badge">
+            <div class="user-badge" title="Farmer Profile">
               <div class="user-avatar-mini">
                 <i class="fa-solid fa-user"></i>
               </div>
-              <a href="{{ url_for('profile') }}" style="color: inherit; font-weight: 700;">{{ current_user.full_name.split(' ')[0] }}</a>
+              <a href="{{ url_for('profile') }}" style="color: inherit; font-weight: 700;"><span>{{ current_user.full_name.split(' ')[0] }}</span></a>
             </div>
 
             <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-danger" title="Sign Out">
