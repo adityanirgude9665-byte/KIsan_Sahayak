@@ -3,303 +3,489 @@
 {% block title %}Admin Control Center — Kisan Sahayak{% endblock %}
 
 {% block content %}
-<div class="container" style="padding-top: 3rem; padding-bottom: 5rem;">
+<div class="container" style="padding-top: 2rem; padding-bottom: 5rem;">
 
-  <!-- PAGE HEADER -->
-  <div class="section-header" style="text-align: left; margin-bottom: 2rem; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    <div>
-      <span class="section-badge" style="background-color: #fee2e2; color: #b91c1c; border-color: #fca5a5;">
-        <i class="fa-solid fa-shield-halved"></i> Administrator Portal
-      </span>
-      <h1 class="section-title" style="margin-bottom: 0.25rem;">Admin Control Center</h1>
-      <p class="section-subtitle" style="margin: 0;">
-        Manage verified agriculture resources, government schemes, registered users, community discussions, and review feedback ratings.
+  <!-- ADMIN EXECUTIVE HEADER -->
+  <div class="admin-header-card">
+    <div class="admin-header-main">
+      <div class="admin-badge-row">
+        <span class="section-badge admin-badge">
+          <i class="fa-solid fa-shield-halved"></i> Administrator Portal
+        </span>
+        <span class="admin-user-tag">
+          <i class="fa-solid fa-circle-check" style="color: var(--primary-light);"></i> Verified Admin: {{ current_user.full_name }}
+        </span>
+      </div>
+      <h1 class="admin-title">Admin Control Center</h1>
+      <p class="admin-subtitle">
+        Manage verified agriculture schemes, crop recommendations, farming tools, registered users, community discussions, and platform reviews.
       </p>
     </div>
-    <button class="btn btn-primary btn-lg" onclick="openModal('addResourceModal')">
-      <i class="fa-solid fa-plus"></i> Add New Resource
-    </button>
+    <div class="admin-header-actions">
+      <a href="{{ url_for('index') }}" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Public Site
+      </a>
+      <button class="btn btn-primary" onclick="openModal('addResourceModal')">
+        <i class="fa-solid fa-plus"></i> Add New Resource
+      </button>
+    </div>
   </div>
 
   <!-- ADMIN METRICS KPI CARDS -->
   <div class="admin-metrics-grid">
     <div class="admin-metric-card">
-      <div class="admin-metric-val">{{ stats.total_users }}</div>
-      <div class="admin-metric-label"><i class="fa-solid fa-users"></i> Total Users</div>
+      <div class="admin-metric-icon" style="background: rgba(2, 132, 199, 0.12); color: #0284c7;">
+        <i class="fa-solid fa-users"></i>
+      </div>
+      <div>
+        <div class="admin-metric-val">{{ stats.total_users }}</div>
+        <div class="admin-metric-label">Registered Users</div>
+      </div>
     </div>
 
     <div class="admin-metric-card">
-      <div class="admin-metric-val" style="color: #0284c7;">{{ stats.total_resources }}</div>
-      <div class="admin-metric-label"><i class="fa-solid fa-layer-group"></i> Total Resources</div>
+      <div class="admin-metric-icon" style="background: rgba(21, 128, 61, 0.12); color: var(--primary-green);">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <div>
+        <div class="admin-metric-val" style="color: var(--primary-green);">{{ stats.total_resources }}</div>
+        <div class="admin-metric-label">Verified Resources</div>
+      </div>
     </div>
 
     <div class="admin-metric-card">
-      <div class="admin-metric-val" style="color: #059669;">{{ stats.total_categories }}</div>
-      <div class="admin-metric-label"><i class="fa-solid fa-tags"></i> Categories</div>
+      <div class="admin-metric-icon" style="background: rgba(5, 150, 105, 0.12); color: #059669;">
+        <i class="fa-solid fa-tags"></i>
+      </div>
+      <div>
+        <div class="admin-metric-val" style="color: #059669;">{{ stats.total_categories }}</div>
+        <div class="admin-metric-label">Agri Categories</div>
+      </div>
     </div>
 
     <div class="admin-metric-card">
-      <div class="admin-metric-val" style="color: #d97706;">{{ stats.total_bookmarks }}</div>
-      <div class="admin-metric-label"><i class="fa-solid fa-bookmark"></i> Total Bookmarks</div>
+      <div class="admin-metric-icon" style="background: rgba(217, 119, 6, 0.12); color: var(--amber-warm);">
+        <i class="fa-solid fa-bookmark"></i>
+      </div>
+      <div>
+        <div class="admin-metric-val" style="color: var(--amber-warm);">{{ stats.total_bookmarks }}</div>
+        <div class="admin-metric-label">Total Bookmarks</div>
+      </div>
     </div>
 
     <div class="admin-metric-card">
-      <div class="admin-metric-val" style="color: #9333ea;">{{ stats.total_posts }}</div>
-      <div class="admin-metric-label"><i class="fa-solid fa-comments"></i> Community Posts</div>
+      <div class="admin-metric-icon" style="background: rgba(147, 51, 234, 0.12); color: #9333ea;">
+        <i class="fa-solid fa-comments"></i>
+      </div>
+      <div>
+        <div class="admin-metric-val" style="color: #9333ea;">{{ stats.total_posts }}</div>
+        <div class="admin-metric-label">Community Posts</div>
+      </div>
     </div>
 
     <div class="admin-metric-card">
-      <div class="admin-metric-val" style="color: #ea580c;">★ {{ stats.avg_rating }}</div>
-      <div class="admin-metric-label"><i class="fa-solid fa-star"></i> Avg. Rating ({{ stats.total_feedback }})</div>
+      <div class="admin-metric-icon" style="background: rgba(234, 88, 12, 0.12); color: #ea580c;">
+        <i class="fa-solid fa-star"></i>
+      </div>
+      <div>
+        <div class="admin-metric-val" style="color: #ea580c;">★ {{ stats.avg_rating }}</div>
+        <div class="admin-metric-label">Avg Rating ({{ stats.total_feedback }})</div>
+      </div>
     </div>
   </div>
 
-  <!-- TABBED NAVIGATION STRIP -->
-  <div class="filter-search-strip" style="margin-bottom: 2rem;">
-    <div class="filter-pills-row">
-      <button class="filter-pill active" onclick="showAdminTab('tab-resources', this)">
-        <i class="fa-solid fa-database"></i> Manage Resources ({{ resources|length }})
+  <!-- ADMIN TABS NAVIGATION STRIP -->
+  <div class="admin-tabs-nav-wrap">
+    <div class="admin-tabs-list" role="tablist">
+      <button class="admin-tab-btn active" onclick="showAdminTab('tab-resources', this)">
+        <i class="fa-solid fa-database"></i> Resources Catalog <span class="tab-count-badge">{{ resources|length }}</span>
       </button>
-      <button class="filter-pill" onclick="showAdminTab('tab-users', this)">
-        <i class="fa-solid fa-users-gear"></i> Manage Users ({{ users|length }})
+      <button class="admin-tab-btn" onclick="showAdminTab('tab-users', this)">
+        <i class="fa-solid fa-users-gear"></i> Farmers & Users <span class="tab-count-badge">{{ users|length }}</span>
       </button>
-      <button class="filter-pill" onclick="showAdminTab('tab-community', this)">
-        <i class="fa-solid fa-comments"></i> Community Posts ({{ posts|length }})
+      <button class="admin-tab-btn" onclick="showAdminTab('tab-community', this)">
+        <i class="fa-solid fa-comments"></i> Community Posts <span class="tab-count-badge">{{ posts|length }}</span>
       </button>
-      <button class="filter-pill" onclick="showAdminTab('tab-feedback', this)">
-        <i class="fa-solid fa-star-half-stroke"></i> Feedback & Ratings ({{ feedback_list|length }})
+      <button class="admin-tab-btn" onclick="showAdminTab('tab-feedback', this)">
+        <i class="fa-solid fa-star-half-stroke"></i> Reviews & Feedback <span class="tab-count-badge">{{ feedback_list|length }}</span>
+      </button>
+      <button class="admin-tab-btn" onclick="showAdminTab('tab-categories', this)">
+        <i class="fa-solid fa-tags"></i> Agri Categories <span class="tab-count-badge">{{ categories|length }}</span>
       </button>
     </div>
   </div>
 
-  <!-- TAB 1: MANAGE RESOURCES -->
+  <!-- ========================================================================= -->
+  <!-- TAB 1: MANAGE RESOURCES                                                   -->
+  <!-- ========================================================================= -->
   <div id="tab-resources" class="admin-tab-content">
-    <div class="admin-table-wrap">
-      <table class="mandi-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title & Provider</th>
-            <th>Type</th>
-            <th>Category</th>
-            <th>Bookmarks</th>
-            <th>Rating</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for r in resources %}
+    <div class="admin-panel-card">
+      <div class="admin-panel-toolbar">
+        <div class="admin-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="adminResourceSearch" class="form-control" placeholder="Search resources by title, provider, or category...">
+        </div>
+        <div class="admin-filter-pill-group">
+          <button type="button" class="admin-subpill active" data-res-type="all">All ({{ resources|length }})</button>
+          <button type="button" class="admin-subpill" data-res-type="scheme">Schemes</button>
+          <button type="button" class="admin-subpill" data-res-type="crop">Crops</button>
+          <button type="button" class="admin-subpill" data-res-type="tool">Tools</button>
+          <button type="button" class="admin-subpill" data-res-type="loan">Loans</button>
+          <button type="button" class="admin-subpill" data-res-type="guide">Guides</button>
+        </div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="mandi-table admin-data-table" id="adminResourcesTable">
+          <thead>
             <tr>
-              <td style="font-weight: 700;">#{{ r.id }}</td>
-              <td>
-                <div style="font-weight: 700; color: var(--forest-dark);">{{ r.title }}</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">{{ r.provider }}</div>
-              </td>
-              <td>
-                <span class="section-badge" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; text-transform: capitalize;">
-                  {{ r.resource_type }}
-                </span>
-              </td>
-              <td style="font-size: 0.85rem;">{{ r.category_name }}</td>
-              <td style="font-weight: 700;"><i class="fa-solid fa-bookmark" style="color: var(--amber-warm);"></i> {{ r.bookmark_count }}</td>
-              <td style="font-weight: 700; color: #b45309;">
-                {% if r.avg_rating > 0 %}
-                  ★ {{ "%.1f"|format(r.avg_rating) }}
-                {% else %}
-                  -
-                {% endif %}
-              </td>
-              <td>
-                <div style="display: flex; gap: 0.4rem;">
-                  <button class="btn btn-secondary btn-sm admin-edit-btn"
-                          data-id="{{ r.id }}"
-                          data-title="{{ r.title }}"
-                          data-type="{{ r.resource_type }}"
-                          data-category="{{ r.category_name }}"
-                          data-desc="{{ r.description }}"
-                          data-url="{{ r.external_url }}"
-                          data-provider="{{ r.provider }}"
-                          data-climate="{{ r.season_climate }}"
-                          data-eligibility="{{ r.eligibility }}"
-                          data-benefits="{{ r.benefits }}"
-                          title="Edit Resource">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <form action="{{ url_for('admin_delete_resource', res_id=r.id) }}" method="POST" onsubmit="return confirm('Delete this resource permanently?');" style="display: inline;">
+              <th style="width: 60px;">ID</th>
+              <th>Resource Title & Provider</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Engagement</th>
+              <th>Rating</th>
+              <th style="text-align: right; width: 140px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in resources %}
+              <tr class="admin-res-row" data-title="{{ r.title|lower }}" data-provider="{{ (r.provider or '')|lower }}" data-cat="{{ (r.category_name or '')|lower }}" data-type="{{ (r.resource_type or '')|lower }}">
+                <td style="font-weight: 700; color: var(--text-muted);">#{{ r.id }}</td>
+                <td>
+                  <div style="font-weight: 700; color: var(--forest-dark); font-size: 0.95rem;">{{ r.title }}</div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; margin-top: 2px;">
+                    <i class="fa-solid fa-landmark"></i> {{ r.provider or 'General' }}
+                    {% if r.external_url %}
+                      <a href="{{ r.external_url }}" target="_blank" rel="noopener" style="color: var(--primary-green); margin-left: 0.4rem;" title="Open Official Portal">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                      </a>
+                    {% endif %}
+                  </div>
+                </td>
+                <td>
+                  <span class="type-badge type-badge-{{ r.resource_type }}">
+                    {{ r.resource_type }}
+                  </span>
+                </td>
+                <td style="font-size: 0.85rem; color: var(--text-main);">
+                  <span class="category-pill">{{ r.category_name or 'General' }}</span>
+                </td>
+                <td>
+                  <span style="font-size: 0.85rem; font-weight: 700; color: var(--forest-dark);">
+                    <i class="fa-solid fa-bookmark" style="color: var(--amber-warm);"></i> {{ r.bookmark_count }}
+                  </span>
+                </td>
+                <td>
+                  {% if r.avg_rating > 0 %}
+                    <span class="rating-badge-mini">★ {{ "%.1f"|format(r.avg_rating) }}</span>
+                  {% else %}
+                    <span style="color: var(--text-light); font-size: 0.85rem;">—</span>
+                  {% endif %}
+                </td>
+                <td style="text-align: right;">
+                  <div style="display: inline-flex; gap: 0.35rem;">
+                    <button type="button" class="btn btn-secondary btn-sm admin-edit-btn"
+                            data-id="{{ r.id }}"
+                            data-title="{{ r.title }}"
+                            data-type="{{ r.resource_type }}"
+                            data-category="{{ r.category_name }}"
+                            data-desc="{{ r.description }}"
+                            data-url="{{ r.external_url }}"
+                            data-provider="{{ r.provider }}"
+                            data-climate="{{ r.season_climate }}"
+                            data-eligibility="{{ r.eligibility }}"
+                            data-benefits="{{ r.benefits }}"
+                            title="Edit Resource">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <form action="{{ url_for('admin_delete_resource', res_id=r.id) }}" method="POST" onsubmit="return confirm('Delete resource: {{ r.title|replace(''', '') }}?');" style="display: inline;">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Resource">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- TAB 2: MANAGE FARMERS & USERS                                            -->
+  <!-- ========================================================================= -->
+  <div id="tab-users" class="admin-tab-content" style="display: none;">
+    <div class="admin-panel-card">
+      <div class="admin-panel-toolbar">
+        <div class="admin-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="adminUserSearch" class="form-control" placeholder="Search farmers by name, username, email, or state...">
+        </div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="mandi-table admin-data-table" id="adminUsersTable">
+          <thead>
+            <tr>
+              <th style="width: 60px;">ID</th>
+              <th>Full Name</th>
+              <th>Username</th>
+              <th>Email Address</th>
+              <th>State / UT</th>
+              <th>Role</th>
+              <th>Joined Date</th>
+              <th style="text-align: right; width: 140px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for u in users %}
+              <tr class="admin-user-row" data-name="{{ u.full_name|lower }}" data-user="{{ u.username|lower }}" data-email="{{ u.email|lower }}" data-state="{{ (u.state or '')|lower }}">
+                <td style="font-weight: 700; color: var(--text-muted);">#{{ u.id }}</td>
+                <td style="font-weight: 700; color: var(--forest-dark);">{{ u.full_name }}</td>
+                <td><span style="font-family: monospace; font-size: 0.85rem; color: var(--text-muted);">@{{ u.username }}</span></td>
+                <td style="font-size: 0.88rem; color: var(--text-main);">{{ u.email }}</td>
+                <td>
+                  <span class="state-pill"><i class="fa-solid fa-location-dot" style="color: var(--amber-warm);"></i> {{ u.state or 'General' }}</span>
+                </td>
+                <td>
+                  {% if u.role == 'admin' %}
+                    <span class="admin-tag" style="font-size: 0.72rem; padding: 0.2rem 0.55rem;"><i class="fa-solid fa-shield-halved"></i> ADMIN</span>
+                  {% else %}
+                    <span class="farmer-tag"><i class="fa-solid fa-seedling"></i> FARMER</span>
+                  {% endif %}
+                </td>
+                <td style="font-size: 0.82rem; color: var(--text-muted);">{{ u.created_at|format_date }}</td>
+                <td style="text-align: right;">
+                  <div style="display: inline-flex; gap: 0.35rem;">
+                    {% if u.id != current_user.id %}
+                      <form action="{{ url_for('admin_toggle_user_role', u_id=u.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Toggle role for @{{ u.username }}?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button type="submit" class="btn btn-secondary btn-sm" title="Toggle Role (Farmer <-> Admin)">
+                          <i class="fa-solid fa-user-shield"></i>
+                        </button>
+                      </form>
+                      <form action="{{ url_for('admin_delete_user', u_id=u.id) }}" method="POST" onsubmit="return confirm('Delete user @{{ u.username }} and all associated records?');" style="display: inline;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete User">
+                          <i class="fa-solid fa-user-xmark"></i>
+                        </button>
+                      </form>
+                    {% else %}
+                      <span class="current-user-badge">You (Active)</span>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- TAB 3: MANAGE COMMUNITY POSTS                                            -->
+  <!-- ========================================================================= -->
+  <div id="tab-community" class="admin-tab-content" style="display: none;">
+    <div class="admin-panel-card">
+      <div class="admin-panel-toolbar">
+        <div class="admin-search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="adminCommunitySearch" class="form-control" placeholder="Search community questions by author or keyword...">
+        </div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table class="mandi-table admin-data-table" id="adminCommunityTable">
+          <thead>
+            <tr>
+              <th style="width: 60px;">ID</th>
+              <th>Author</th>
+              <th>Category</th>
+              <th>Question Title & Content</th>
+              <th>Activity</th>
+              <th>Posted Date</th>
+              <th style="text-align: right; width: 100px;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in posts %}
+              <tr class="admin-comm-row" data-author="{{ p.full_name|lower }}" data-title="{{ p.title|lower }}" data-content="{{ p.content|lower }}">
+                <td style="font-weight: 700; color: var(--text-muted);">#{{ p.id }}</td>
+                <td>
+                  <div style="font-weight: 700; color: var(--forest-dark);">{{ p.full_name }}</div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">@{{ p.username }}</div>
+                </td>
+                <td><span class="category-pill">{{ p.category }}</span></td>
+                <td>
+                  <div style="font-weight: 700; color: var(--forest-dark); font-size: 0.95rem;">{{ p.title }}</div>
+                  <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; margin-top: 2px;">{{ p.content[:90] }}{% if p.content|length > 90 %}...{% endif %}</div>
+                </td>
+                <td>
+                  <div style="display: flex; gap: 0.75rem; font-size: 0.85rem;">
+                    <span><i class="fa-solid fa-thumbs-up" style="color: var(--primary-green);"></i> {{ p.like_count }}</span>
+                    <span><i class="fa-solid fa-comment" style="color: #0284c7;"></i> {{ p.comment_count }}</span>
+                  </div>
+                </td>
+                <td style="font-size: 0.82rem; color: var(--text-muted);">{{ p.created_at|format_date }}</td>
+                <td style="text-align: right;">
+                  <form action="{{ url_for('delete_post', post_id=p.id) }}" method="POST" onsubmit="return confirm('Delete this post permanently?');">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Resource">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Community Post">
                       <i class="fa-solid fa-trash"></i>
                     </button>
                   </form>
-                </div>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <!-- TAB 2: MANAGE USERS -->
-  <div id="tab-users" class="admin-tab-content" style="display: none;">
-    <div class="admin-table-wrap">
-      <table class="mandi-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>State</th>
-            <th>Role</th>
-            <th>Joined</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for u in users %}
-            <tr>
-              <td style="font-weight: 700;">#{{ u.id }}</td>
-              <td style="font-weight: 700; color: var(--forest-dark);">{{ u.full_name }}</td>
-              <td>@{{ u.username }}</td>
-              <td>{{ u.email }}</td>
-              <td>{{ u.state }}</td>
-              <td>
-                {% if u.role == 'admin' %}
-                  <span class="admin-tag">ADMIN</span>
-                {% else %}
-                  <span class="section-badge" style="font-size: 0.72rem; padding: 0.15rem 0.5rem;">FARMER</span>
-                {% endif %}
-              </td>
-              <td style="font-size: 0.85rem; color: var(--text-muted);">{{ u.created_at|format_date }}</td>
-              <td>
-                <div style="display: flex; gap: 0.4rem;">
-                  {% if u.id != current_user.id %}
-                    <form action="{{ url_for('admin_toggle_user_role', u_id=u.id) }}" method="POST" style="display: inline;">
-                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                      <button type="submit" class="btn btn-secondary btn-sm" title="Toggle Role (User/Admin)">
-                        <i class="fa-solid fa-user-shield"></i>
-                      </button>
-                    </form>
-                    <form action="{{ url_for('admin_delete_user', u_id=u.id) }}" method="POST" onsubmit="return confirm('Delete this user and all their records?');" style="display: inline;">
-                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete User">
-                        <i class="fa-solid fa-user-xmark"></i>
-                      </button>
-                    </form>
-                  {% else %}
-                    <span style="font-size: 0.78rem; color: var(--text-muted);">Current User</span>
-                  {% endif %}
-                </div>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- TAB 3: MANAGE COMMUNITY POSTS -->
-  <div id="tab-community" class="admin-tab-content" style="display: none;">
-    <div class="admin-table-wrap">
-      <table class="mandi-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>Title & Content Snippet</th>
-            <th>Likes</th>
-            <th>Comments</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for p in posts %}
-            <tr>
-              <td style="font-weight: 700;">#{{ p.id }}</td>
-              <td>
-                <div style="font-weight: 700;">{{ p.full_name }}</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">@{{ p.username }}</div>
-              </td>
-              <td><span class="section-badge" style="font-size: 0.72rem; padding: 0.15rem 0.5rem;">{{ p.category }}</span></td>
-              <td>
-                <div style="font-weight: 700; color: var(--forest-dark);">{{ p.title }}</div>
-                <div style="font-size: 0.82rem; color: var(--text-muted);">{{ p.content[:80] }}...</div>
-              </td>
-              <td><i class="fa-solid fa-thumbs-up" style="color: var(--primary-green);"></i> {{ p.like_count }}</td>
-              <td><i class="fa-solid fa-comment" style="color: #0284c7;"></i> {{ p.comment_count }}</td>
-              <td style="font-size: 0.85rem; color: var(--text-muted);">{{ p.created_at|format_date }}</td>
-              <td>
-                <form action="{{ url_for('delete_post', post_id=p.id) }}" method="POST" onsubmit="return confirm('Delete this community post?');">
-                  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                  <button type="submit" class="btn btn-sm btn-outline-danger">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </form>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- TAB 4: MANAGE FEEDBACK & RATINGS -->
+  <!-- ========================================================================= -->
+  <!-- TAB 4: MANAGE FEEDBACK & RATINGS                                         -->
+  <!-- ========================================================================= -->
   <div id="tab-feedback" class="admin-tab-content" style="display: none;">
-    <div class="admin-table-wrap">
-      <table class="mandi-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>User</th>
-            <th>Resource Title</th>
-            <th>Rating</th>
-            <th>Comment</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for f in feedback_list %}
+    <div class="admin-panel-card">
+      <div class="admin-table-wrap">
+        <table class="mandi-table admin-data-table">
+          <thead>
             <tr>
-              <td style="font-weight: 700;">#{{ f.id }}</td>
-              <td>
-                <div style="font-weight: 700;">{{ f.full_name }}</div>
-                <div style="font-size: 0.78rem; color: var(--text-muted);">@{{ f.username }}</div>
-              </td>
-              <td style="font-weight: 700; color: var(--forest-dark);">{{ f.resource_title }}</td>
-              <td>
-                <span class="rating-badge-mini">
-                  <i class="fa-solid fa-star"></i> {{ f.rating }} / 5
-                </span>
-              </td>
-              <td style="font-size: 0.88rem; color: var(--text-main); max-width: 300px;">{{ f.comment }}</td>
-              <td style="font-size: 0.85rem; color: var(--text-muted);">{{ f.created_at|format_date }}</td>
-              <td>
-                <form action="{{ url_for('admin_delete_feedback', f_id=f.id) }}" method="POST" onsubmit="return confirm('Delete this feedback?');">
-                  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                  <button type="submit" class="btn btn-sm btn-outline-danger">
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </form>
-              </td>
+              <th style="width: 60px;">ID</th>
+              <th>Farmer</th>
+              <th>Resource Title</th>
+              <th>Rating</th>
+              <th>Feedback Comment</th>
+              <th>Submitted Date</th>
+              <th style="text-align: right; width: 100px;">Action</th>
             </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {% for f in feedback_list %}
+              <tr>
+                <td style="font-weight: 700; color: var(--text-muted);">#{{ f.id }}</td>
+                <td>
+                  <div style="font-weight: 700;">{{ f.full_name }}</div>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">@{{ f.username }}</div>
+                </td>
+                <td style="font-weight: 700; color: var(--forest-dark);">{{ f.resource_title }}</td>
+                <td>
+                  <span class="rating-badge-mini">
+                    <i class="fa-solid fa-star"></i> {{ f.rating }} / 5
+                  </span>
+                </td>
+                <td style="font-size: 0.88rem; color: var(--text-main); line-height: 1.4; max-width: 320px;">
+                  "{{ f.comment }}"
+                </td>
+                <td style="font-size: 0.82rem; color: var(--text-muted);">{{ f.created_at|format_date }}</td>
+                <td style="text-align: right;">
+                  <form action="{{ url_for('admin_delete_feedback', f_id=f.id) }}" method="POST" onsubmit="return confirm('Delete this feedback?');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Review">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- TAB 5: MANAGE AGRI CATEGORIES                                            -->
+  <!-- ========================================================================= -->
+  <div id="tab-categories" class="admin-tab-content" style="display: none;">
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+      
+      <!-- Add Category Form -->
+      <div class="admin-panel-card">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--forest-dark); margin-bottom: 1rem;">
+          <i class="fa-solid fa-folder-plus" style="color: var(--primary-green);"></i> Add Agri Category
+        </h3>
+        <form action="{{ url_for('admin_add_category') }}" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <div class="form-group">
+            <label class="form-label">Category Name *</label>
+            <input type="text" name="name" class="form-control" placeholder="e.g. Organic Fertilizers" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Font Awesome Icon</label>
+            <input type="text" name="icon" class="form-control" placeholder="fa-seedling" value="fa-seedling">
+            <small style="font-size: 0.75rem; color: var(--text-muted);">e.g. fa-seedling, fa-tractor, fa-droplet, fa-cloud-sun</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="2" placeholder="Brief summary of category topics..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            <i class="fa-solid fa-plus"></i> Create Category
+          </button>
+        </form>
+      </div>
+
+      <!-- Categories Directory List -->
+      <div class="admin-panel-card">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--forest-dark); margin-bottom: 1rem;">
+          <i class="fa-solid fa-tags" style="color: var(--primary-green);"></i> Existing Agri Categories ({{ categories|length }})
+        </h3>
+        <div class="admin-table-wrap">
+          <table class="mandi-table admin-data-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">ID</th>
+                <th>Icon</th>
+                <th>Category Name</th>
+                <th>Description</th>
+                <th style="text-align: right; width: 90px;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for c in categories %}
+                <tr>
+                  <td style="font-weight: 700; color: var(--text-muted);">#{{ c.id }}</td>
+                  <td>
+                    <div style="width: 32px; height: 32px; background: var(--mint-bg); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--primary-green);">
+                      <i class="fa-solid {{ c.icon or 'fa-seedling' }}"></i>
+                    </div>
+                  </td>
+                  <td style="font-weight: 700; color: var(--forest-dark);">{{ c.name }}</td>
+                  <td style="font-size: 0.85rem; color: var(--text-muted);">{{ c.description or '—' }}</td>
+                  <td style="text-align: right;">
+                    <form action="{{ url_for('admin_delete_category', cat_id=c.id) }}" method="POST" onsubmit="return confirm('Delete category: {{ c.name }}?');">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Category">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
 </div>
 
-<!-- MODAL: ADD RESOURCE MODAL -->
+<!-- ========================================================================= -->
+<!-- MODAL: ADD RESOURCE MODAL                                                -->
+<!-- ========================================================================= -->
 <div class="modal-backdrop" id="addResourceModal">
   <div class="modal-dialog">
     <button class="modal-close-btn" onclick="closeModal('addResourceModal')"><i class="fa-solid fa-xmark"></i></button>
     <div style="margin-bottom: 1.25rem;">
-      <span class="section-badge"><i class="fa-solid fa-plus"></i> New Agri Entry</span>
+      <span class="section-badge"><i class="fa-solid fa-plus"></i> New Agriculture Entry</span>
       <h2 class="resource-card-title" style="font-size: 1.4rem; margin-top: 0.5rem;">Add Agricultural Resource</h2>
     </div>
 
@@ -332,7 +518,7 @@
 
       <div class="form-group">
         <label class="form-label">Short Description *</label>
-        <textarea name="description" class="form-control" rows="3" placeholder="Clear summary of what this resource offers..." required></textarea>
+        <textarea name="description" class="form-control" rows="3" placeholder="Clear summary of what this scheme, crop, or tool offers..." required></textarea>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -353,7 +539,7 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label">Climate / Soil / Specs</label>
+        <label class="form-label">Climate / Soil / Specifications</label>
         <input type="text" name="season_climate" class="form-control" placeholder="e.g. Kharif (June-Nov) | Temp: 20-30°C | Black Soil">
       </div>
 
@@ -377,7 +563,9 @@
   </div>
 </div>
 
-<!-- MODAL: EDIT RESOURCE MODAL -->
+<!-- ========================================================================= -->
+<!-- MODAL: EDIT RESOURCE MODAL                                               -->
+<!-- ========================================================================= -->
 <div class="modal-backdrop" id="editResourceModal">
   <div class="modal-dialog">
     <button class="modal-close-btn" onclick="closeModal('editResourceModal')"><i class="fa-solid fa-xmark"></i></button>
@@ -460,7 +648,7 @@ function showAdminTab(tabId, btnEl) {
   document.querySelectorAll('.admin-tab-content').forEach(tab => {
     tab.style.display = 'none';
   });
-  document.querySelectorAll('.filter-pills-row .filter-pill').forEach(btn => {
+  document.querySelectorAll('.admin-tab-btn').forEach(btn => {
     btn.classList.remove('active');
   });
 
@@ -472,5 +660,81 @@ function showAdminTab(tabId, btnEl) {
     btnEl.classList.add('active');
   }
 }
+
+// Admin Real-time Resource Search & Type Filter
+document.addEventListener('DOMContentLoaded', () => {
+  const resSearch = document.getElementById('adminResourceSearch');
+  const typePills = document.querySelectorAll('.admin-subpill');
+  let currentType = 'all';
+
+  function filterResources() {
+    const query = resSearch ? resSearch.value.toLowerCase().trim() : '';
+    document.querySelectorAll('.admin-res-row').forEach(row => {
+      const title = row.getAttribute('data-title') || '';
+      const provider = row.getAttribute('data-provider') || '';
+      const cat = row.getAttribute('data-cat') || '';
+      const type = row.getAttribute('data-type') || '';
+
+      const matchesQuery = !query || title.includes(query) || provider.includes(query) || cat.includes(query);
+      const matchesType = currentType === 'all' || type === currentType;
+
+      if (matchesQuery && matchesType) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  if (resSearch) {
+    resSearch.addEventListener('input', filterResources);
+  }
+
+  typePills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      typePills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentType = pill.getAttribute('data-res-type');
+      filterResources();
+    });
+  });
+
+  // Admin User Search
+  const userSearch = document.getElementById('adminUserSearch');
+  if (userSearch) {
+    userSearch.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.admin-user-row').forEach(row => {
+        const name = row.getAttribute('data-name') || '';
+        const user = row.getAttribute('data-user') || '';
+        const email = row.getAttribute('data-email') || '';
+        const state = row.getAttribute('data-state') || '';
+        if (!q || name.includes(q) || user.includes(q) || email.includes(q) || state.includes(q)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+  }
+
+  // Admin Community Post Search
+  const commSearch = document.getElementById('adminCommunitySearch');
+  if (commSearch) {
+    commSearch.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.admin-comm-row').forEach(row => {
+        const author = row.getAttribute('data-author') || '';
+        const title = row.getAttribute('data-title') || '';
+        const content = row.getAttribute('data-content') || '';
+        if (!q || author.includes(q) || title.includes(q) || content.includes(q)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+  }
+});
 </script>
 {% endblock %}
