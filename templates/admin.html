@@ -199,7 +199,7 @@
                             title="Edit Resource">
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
-                    <form action="{{ url_for('admin_delete_resource', res_id=r.id) }}" method="POST" onsubmit="return confirm('Delete resource: {{ r.title|replace(''', '') }}?');" style="display: inline;">
+                    <form action="{{ url_for('admin_delete_resource', res_id=r.id) }}" method="POST" onsubmit="return confirm('Delete this agricultural resource?');" style="display: inline;">
                       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                       <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Resource">
                         <i class="fa-solid fa-trash"></i>
@@ -401,77 +401,49 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- TAB 5: MANAGE AGRI CATEGORIES                                            -->
+  <!-- ========================================================================= -->
+  <!-- TAB 5: AGRI CATEGORIES DIRECTORY                                         -->
   <!-- ========================================================================= -->
   <div id="tab-categories" class="admin-tab-content" style="display: none;">
-    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
-      
-      <!-- Add Category Form -->
-      <div class="admin-panel-card">
-        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--forest-dark); margin-bottom: 1rem;">
-          <i class="fa-solid fa-folder-plus" style="color: var(--primary-green);"></i> Add Agri Category
+    <div class="admin-panel-card">
+      <div class="admin-panel-header">
+        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--forest-dark); margin: 0;">
+          <i class="fa-solid fa-tags" style="color: var(--primary-green);"></i> Registered Agricultural Categories ({{ categories|length }})
         </h3>
-        <form action="{{ url_for('admin_add_category') }}" method="POST">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-          <div class="form-group">
-            <label class="form-label">Category Name *</label>
-            <input type="text" name="name" class="form-control" placeholder="e.g. Organic Fertilizers" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Font Awesome Icon</label>
-            <input type="text" name="icon" class="form-control" placeholder="fa-seedling" value="fa-seedling">
-            <small style="font-size: 0.75rem; color: var(--text-muted);">e.g. fa-seedling, fa-tractor, fa-droplet, fa-cloud-sun</small>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Description</label>
-            <textarea name="description" class="form-control" rows="2" placeholder="Brief summary of category topics..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%;">
-            <i class="fa-solid fa-plus"></i> Create Category
-          </button>
-        </form>
+        <span class="badge" style="background: rgba(21, 128, 61, 0.12); color: var(--primary-green); font-weight: 600;">System Taxonomies</span>
       </div>
 
-      <!-- Categories Directory List -->
-      <div class="admin-panel-card">
-        <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--forest-dark); margin-bottom: 1rem;">
-          <i class="fa-solid fa-tags" style="color: var(--primary-green);"></i> Existing Agri Categories ({{ categories|length }})
-        </h3>
-        <div class="admin-table-wrap">
-          <table class="mandi-table admin-data-table">
-            <thead>
+      <div class="admin-table-wrap">
+        <table class="mandi-table admin-data-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">ID</th>
+              <th>Icon</th>
+              <th>Category Name</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in categories %}
               <tr>
-                <th style="width: 50px;">ID</th>
-                <th>Icon</th>
-                <th>Category Name</th>
-                <th>Description</th>
-                <th style="text-align: right; width: 90px;">Action</th>
+                <td style="font-weight: 700; color: var(--text-muted);">#{{ c.id }}</td>
+                <td>
+                  <div style="width: 34px; height: 34px; background: rgba(21, 128, 61, 0.1); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--primary-green);">
+                    <i class="fa-solid {{ c.icon or 'fa-seedling' }}"></i>
+                  </div>
+                </td>
+                <td style="font-weight: 700; color: var(--forest-dark);">{{ c.name }}</td>
+                <td style="font-size: 0.88rem; color: var(--text-muted);">{{ c.description or 'Standard category for agricultural resources and farming guidance.' }}</td>
+                <td>
+                  <span class="badge" style="background: rgba(34, 197, 94, 0.15); color: #15803d; font-size: 0.75rem; font-weight: 700;">
+                    <i class="fa-solid fa-circle-check"></i> Active
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {% for c in categories %}
-                <tr>
-                  <td style="font-weight: 700; color: var(--text-muted);">#{{ c.id }}</td>
-                  <td>
-                    <div style="width: 32px; height: 32px; background: var(--mint-bg); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--primary-green);">
-                      <i class="fa-solid {{ c.icon or 'fa-seedling' }}"></i>
-                    </div>
-                  </td>
-                  <td style="font-weight: 700; color: var(--forest-dark);">{{ c.name }}</td>
-                  <td style="font-size: 0.85rem; color: var(--text-muted);">{{ c.description or '—' }}</td>
-                  <td style="text-align: right;">
-                    <form action="{{ url_for('admin_delete_category', cat_id=c.id) }}" method="POST" onsubmit="return confirm('Delete category: {{ c.name }}?');">
-                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Category">
-                        <i class="fa-solid fa-trash"></i>
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
